@@ -91,22 +91,33 @@ module("Acceptance | authenticated/results", function (hooks) {
     assert.equal(getPageTitle(), "Search | Hermes");
   });
 
-  test('there is a "top results" screen', async function (this: Context, assert) {
-    const query = "v"; // This will match `Vault` in the product facet
+  test('_demo there is a "top results" screen', async function (this: Context, assert) {
+    const query = "Vault"; // This will match `Vault` in the product facet
     const docCount = 50;
     const docMax = 12;
     const projectCount = 10;
     const projectMax = 5;
 
+    this.server.createList("person", 25);
+
     this.server.createList("document", 50, {
-      title: query,
+      title: `A document with ${query} in the title`,
+      _snippetResult: {
+        content: {
+          value: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. ${query} sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+        },
+      },
+      product: "Terraform",
     });
 
     this.server.createList("project", 10, {
-      title: query,
+      title: `A project with ${query} in the title`,
+      products: ["Vault", "Consul", "Nomad"],
     });
 
     await visit(`/results?q=${query}`);
+
+    await this.pauseTest();
 
     assert.dom(SEG_PROJECTS_LINK).doesNotHaveClass("active");
     assert.dom(SEG_DOCS_LINK).doesNotHaveClass("active");

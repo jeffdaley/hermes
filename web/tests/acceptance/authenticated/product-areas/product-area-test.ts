@@ -63,12 +63,14 @@ module(
         );
     });
 
-    test(`it can render a "see more" button`, async function (this: AuthenticatedProductAreaRouteTestContext, assert) {
+    test(`_demo it can render a "see more" button`, async function (this: AuthenticatedProductAreaRouteTestContext, assert) {
       this.server.createList("document", 13, {
         product: "Terraform",
       });
 
       await visit("/product-areas/terraform");
+
+      await this.pauseTest();
 
       assert.dom(DOC).exists({ count: 12 });
 

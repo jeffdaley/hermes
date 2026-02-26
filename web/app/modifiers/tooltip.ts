@@ -254,7 +254,7 @@ export default class TooltipModifier extends Modifier<TooltipModifierSignature> 
 
     this.updateState(TooltipState.Opening);
 
-    if (!Ember.testing && this.delay > 0) {
+    if (this.delay > 0) {
       await timeout(this.delay);
     }
 
@@ -390,11 +390,11 @@ export default class TooltipModifier extends Modifier<TooltipModifierSignature> 
       updatePosition,
     );
 
-    if (!Ember.testing && this.openDuration) {
+    if (!!this.openDuration) {
       const fadeAnimation = this.tooltip.animate(
         [{ opacity: 0 }, { opacity: 1 }],
         {
-          duration: Ember.testing ? 0 : 50,
+          duration: 50,
         },
       );
       const transformAnimation = this.tooltip.animate(

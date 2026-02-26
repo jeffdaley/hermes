@@ -15,8 +15,12 @@ module("Acceptance | authenticated/settings", function (hooks) {
     await authenticateSession({});
   });
 
-  test("the page title is correct", async function (this: AuthenticatedSettingsRouteTestContext, assert) {
+  test("_demo the page title is correct", async function (this: AuthenticatedSettingsRouteTestContext, assert) {
+    this.server.createList("product", 25);
+
     await visit("/settings");
+
+    await this.pauseTest();
     assert.equal(getPageTitle(), "Email Notifications | Hermes");
   });
 });

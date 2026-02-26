@@ -1232,11 +1232,17 @@ module("Acceptance | authenticated/document", function (hooks) {
       .hasText("Read-only headers", "shows the locked-doc message");
   });
 
-  test("it displays a list of projects the document is in", async function (this: AuthenticatedDocumentRouteTestContext, assert) {
+  test("_demo it displays a list of projects the document is in", async function (this: AuthenticatedDocumentRouteTestContext, assert) {
+    this.server.createList("product", 25);
+    this.server.createList("person", 25);
+
     this.server.create("document", {
       objectID: 1,
       projects: [1, 2],
+      status: "In-review",
     });
+
+    this.server.createList("document", 34);
 
     this.server.create("project", {
       id: 1,
@@ -1249,6 +1255,8 @@ module("Acceptance | authenticated/document", function (hooks) {
     });
 
     await visit("/document/1");
+
+    await this.pauseTest();
 
     assert.dom(PROJECT_LINK).exists({ count: 2 });
 
