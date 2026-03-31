@@ -25,6 +25,10 @@
     .x-dropdown-list-item-link {
       @apply text-inherit;
 
+      .hds-badge {
+        background: none !important;
+      }
+
       &:not(.is-aria-selected) {
         .check {
           @apply text-inherit;
